@@ -90,10 +90,10 @@ uses {$ifOpt D+}sysutils,{$endif} //< попытка отлова ДИНАМИЧ
 
 
 type
-  finkFIFO_Destroy=fInkStack_Destroy;
-  ainkFIFO_Destroy=aInkStack_Destroy;
-  finkFIFO_Process=fInkStack_Process;
-  ainkFIFO_Process=aInkStack_Process;
+  fInkFIFO_Destroy=fInkStack_Destroy;
+  aInkFIFO_Destroy=aInkStack_Destroy;
+  fInkFIFO_Process=fInkStack_Process;
+  aInkFIFO_Process=aInkStack_Process;
 
 //****************************************************************************//
 //                                                                            //
@@ -105,12 +105,17 @@ type
 
 procedure inkFIFO_INIT    (out Stack:pointer);                                  {$ifdef _INLINE_} inline; {$endif}
 
-procedure inkFIFO_CLEAR   (var Stack:pInkStack; const CallBack:finkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
-procedure inkFIFO_CLEAR   (var Stack:pInkStack; const CallBack:ainkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_CLEAR   (var Stack:pInkStack; const CallBack:fInkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_CLEAR   (var Stack:pInkStack; const CallBack:aInkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
 procedure inkFIFO_ClearOBJ(var Stack:pInkStack);                                 {$ifdef _INLINE_} inline; {$endif}
 procedure inkFIFO_Clean   (var Stack:pInkStack);                                 {$ifdef _INLINE_} inline; {$endif}
-procedure inkFIFO_nodesCLR(var Stack:pointer;   const CallBack:finkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
-procedure inkFIFO_nodesCLR(var Stack:pointer;   const CallBack:ainkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_nodesCLR(var Stack:pointer;   const CallBack:fInkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_nodesCLR(var Stack:pointer;   const CallBack:aInkFIFO_Destroy);{$ifdef _INLINE_} inline; {$endif} overload;
+
+procedure inkFIFO_Erase   (var Stack:pointer; const CmpCXT:pointer; const CmpFNC:fInkFIFO_Process; const DspPRC:fInkFIFO_Destroy); {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_Erase   (var Stack:pointer; const CmpCXT:pointer; const CmpFNC:aInkFIFO_Process; const DspPRC:aInkFIFO_Destroy); {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_nodesERS(var Stack:pointer; const CmpCXT:pointer; const CmpFNC:fInkFIFO_Process; const DspPRC:fInkFIFO_Destroy); {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkFIFO_nodesERS(var Stack:pointer; const CmpCXT:pointer; const CmpFNC:aInkFIFO_Process; const DspPRC:aInkFIFO_Destroy); {$ifdef _INLINE_} inline; {$endif} overload;
 
 //== 2.2 текущие/очевидные свойства списка ==
 
@@ -119,10 +124,10 @@ function  inkFIFO_Count  (const Stack:pointer):tInkStackCount;                  
 
 //== 2.3 от кончика ушей до пят (операции над ВСЕМ списком) ==
 
-function  inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:finkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
-function  inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:ainkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
-function  inkFIFO_nodesEnum(const Stack:pointer;   const Context:pointer; const EnumFNC:finkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
-function  inkFIFO_nodesEnum(const Stack:pointer;   const Context:pointer; const EnumFNC:ainkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:fInkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:aInkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkFIFO_nodesEnum(const Stack:pointer;   const Context:pointer; const EnumFNC:fInkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkFIFO_nodesEnum(const Stack:pointer;   const Context:pointer; const EnumFNC:aInkFIFO_Process):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
 
 //== 2.5 последний Герой (последний узел списка) ==
 
@@ -184,7 +189,7 @@ end;
   * стек ДОЛЖЕН быть построен на типе pInkNodeStack
   * после выполнения Stack===@nil
   :}
-procedure inkFIFO_CLEAR(var Stack:pInkStack; const CallBack:finkFIFO_Destroy);
+procedure inkFIFO_CLEAR(var Stack:pInkStack; const CallBack:fInkFIFO_Destroy);
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_CLEAR function'}{$endIF}
 var tmp:pointer;
 {$deFine _m_protoInkFIFO_FE__tmp_POINTER:=tmp}
@@ -204,7 +209,7 @@ end;
   * стек ДОЛЖЕН быть построен на типе pInkNodeStack
   * после выполнения Stack===@nil
   :}
-procedure inkFIFO_CLEAR(var Stack:pInkStack; const CallBack:ainkFIFO_Destroy);
+procedure inkFIFO_CLEAR(var Stack:pInkStack; const CallBack:aInkFIFO_Destroy);
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_CLEAR method'}{$endIF}
 var tmp:pointer;
 {$deFine _m_protoInkFIFO_FE__tmp_POINTER:=tmp}
@@ -264,7 +269,7 @@ end;
   ---
   * после выполнения Stack===@nil
   :}
-procedure inkFIFO_nodesCLR(var Stack:pointer; const CallBack:finkFIFO_Destroy);
+procedure inkFIFO_nodesCLR(var Stack:pointer; const CallBack:fInkFIFO_Destroy);
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesCLR function'}{$endIF}
 var tmp:pointer;
 {$deFine _m_protoInkFIFO_FF__tmp_POINTER:=tmp}
@@ -283,7 +288,7 @@ end;
   ---
   * после выполнения Stack===@nil
   :}
-procedure inkFIFO_nodesCLR(var Stack:pointer; const CallBack:ainkFIFO_Destroy);
+procedure inkFIFO_nodesCLR(var Stack:pointer; const CallBack:aInkFIFO_Destroy);
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesCLR method'}{$endIF}
 var tmp:pointer;
 {$deFine _m_protoInkFIFO_FF__tmp_POINTER:=tmp}
@@ -291,6 +296,78 @@ var tmp:pointer;
 {$deFine _M_protoInkFIFO_FF__lcl_nodeDST:=CallBack}
 begin //< для удобства навигации
 {$I protoInkFIFO_bodyFNC_FF__CLEAR.inc}
+end;
+
+//==============================================================================
+
+procedure inkFIFO_Erase(var Stack:pointer; const CmpCXT:pointer; const CmpFNC:fInkFIFO_Process; const DspPRC:fInkFIFO_Destroy);
+{$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesERS function'}{$endIF}
+var tmp,tmq:pointer;
+procedure _inkFIFO_Erase_nodeDST_(const Node:pointer); inline;
+begin
+    DspPRC(InkNodeStack_getDATA(Node));
+    InkNodeStack_Destroy(Node);
+end;
+function _inkFIFO_Erase_nodeCMP_(const Context:pointer; const Node:pointer):boolean; inline;
+begin
+    result:=CmpFNC(Context,InkNodeStack_getDATA(Node));
+end;
+{$deFine _m_protoInkFIFO_E4__tmp_POINTER0:=tmp}
+{$deFine _M_protoInkFIFO_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkFIFO_E4__var_STACK   :=Stack}
+{$deFine _M_protoInkFIFO_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkFIFO_E4__lcl_cmpFNC  :=_inkFIFO_Erase_nodeCMP_}
+{$deFine _M_protoInkFIFO_E4__lcl_dspPRC  :=_inkFIFO_Erase_nodeDST_}
+begin //< для удобства навигации
+{$I protoInkFIFO_bodyFNC_E4__Erase.inc}
+end;
+
+procedure inkFIFO_Erase(var Stack:pointer; const CmpCXT:pointer; const CmpFNC:aInkFIFO_Process; const DspPRC:aInkFIFO_Destroy);
+{$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesERS function'}{$endIF}
+var tmp,tmq:pointer;
+procedure _inkFIFO_Erase_nodeDST_(const Node:pointer); inline;
+begin
+    DspPRC(InkNodeStack_getDATA(Node));
+    InkNodeStack_Destroy(Node);
+end;
+function _inkFIFO_Erase_nodeCMP_(const Context:pointer; const Node:pointer):boolean; inline;
+begin
+    result:=CmpFNC(Context,InkNodeStack_getDATA(Node));
+end;
+{$deFine _m_protoInkFIFO_E4__tmp_POINTER0:=tmp}
+{$deFine _M_protoInkFIFO_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkFIFO_E4__var_STACK   :=Stack}
+{$deFine _M_protoInkFIFO_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkFIFO_E4__lcl_cmpFNC  :=_inkFIFO_Erase_nodeCMP_}
+{$deFine _M_protoInkFIFO_E4__lcl_dspPRC  :=_inkFIFO_Erase_nodeDST_}
+begin //< для удобства навигации
+{$I protoInkFIFO_bodyFNC_E4__Erase.inc}
+end;
+
+procedure inkFIFO_nodesERS(var  Stack:pointer; const CmpCXT:pointer; const CmpFNC:fInkFIFO_Process; const DspPRC:fInkFIFO_Destroy);
+{$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesERS function'}{$endIF}
+var tmp,tmq:pointer;
+{$deFine _m_protoInkFIFO_E4__tmp_POINTER0:=tmp}
+{$deFine _M_protoInkFIFO_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkFIFO_E4__var_STACK   :=Stack}
+{$deFine _M_protoInkFIFO_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkFIFO_E4__lcl_cmpFNC  :=CmpFNC}
+{$deFine _M_protoInkFIFO_E4__lcl_dspPRC  :=DspPRC}
+begin //< для удобства навигации
+{$I protoInkFIFO_bodyFNC_E4__Erase.inc}
+end;
+
+procedure inkFIFO_nodesERS(var  Stack:pointer; const CmpCXT:pointer; const CmpFNC:aInkFIFO_Process; const DspPRC:aInkFIFO_Destroy);
+{$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesERS function'}{$endIF}
+var tmp,tmq:pointer;
+{$deFine _m_protoInkFIFO_E4__tmp_POINTER0:=tmp}
+{$deFine _M_protoInkFIFO_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkFIFO_E4__var_STACK   :=Stack}
+{$deFine _M_protoInkFIFO_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkFIFO_E4__lcl_cmpFNC  :=CmpFNC}
+{$deFine _M_protoInkFIFO_E4__lcl_dspPRC  :=DspPRC}
+begin //< для удобства навигации
+{$I protoInkFIFO_bodyFNC_E4__Erase.inc}
 end;
 
 //==============================================================================
@@ -333,7 +410,7 @@ end;
   ---
   * стек ДОЛЖЕН быть построен на типе pInkNodeStack
   :}
-function inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:finkFIFO_Process):pointer;
+function inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:fInkFIFO_Process):pointer;
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_Enumerate function'}{$endIF}
 {$deFine _M_protoInkFIFO_20__cst_STACK  :=Stack}
 {$deFine _M_protoInkFIFO_20__cst_context:=Context}
@@ -355,7 +432,7 @@ end;
   ---
   * стек ДОЛЖЕН быть построен на типе pInkNodeStack
   :}
-function inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:ainkFIFO_Process):pointer;
+function inkFIFO_Enumerate(const Stack:pInkStack; const Context:pointer; const EnumFNC:aInkFIFO_Process):pointer;
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_Enumerate method'}{$endIF}
 {$deFine _M_protoInkFIFO_20__cst_STACK  :=Stack}
 {$deFine _M_protoInkFIFO_20__cst_context:=Context}
@@ -376,7 +453,7 @@ end;
   @param(EnumFNC "сallBack" ФУНКЦИЯ вызываемая для КАЖДОГО узла)
   @return(@nil -- ВСё обошли; иначе указатель на последний посещенный УЗЕЛ)
   :}
-function inkFIFO_nodesEnum(const Stack:pointer; const Context:pointer; const EnumFNC:finkFIFO_Process):pointer;
+function inkFIFO_nodesEnum(const Stack:pointer; const Context:pointer; const EnumFNC:fInkFIFO_Process):pointer;
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesEnum function'}{$endIF}
 {$deFine _M_protoInkFIFO_20__cst_STACK  :=Stack}
 {$deFine _M_protoInkFIFO_20__cst_context:=Context}
@@ -394,7 +471,7 @@ end;
   @param(EnumFNC "сallBack" МЕТОД вызываемый для КАЖДОГО узла)
   @return(@nil -- ВСё обошли; иначе указатель на последний посещенный УЗЕЛ)
   :}
-function inkFIFO_nodesEnum(const Stack:pointer; const Context:pointer; const EnumFNC:ainkFIFO_Process):pointer;
+function inkFIFO_nodesEnum(const Stack:pointer; const Context:pointer; const EnumFNC:aInkFIFO_Process):pointer;
 {$ifDef inkFIFO_fncHeadMessage}{$message 'inkFIFO_nodesEnum method'}{$endIF}
 {$deFine _M_protoInkFIFO_20__cst_STACK  :=Stack}
 {$deFine _M_protoInkFIFO_20__cst_context:=Context}
